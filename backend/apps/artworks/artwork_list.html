@@ -1,0 +1,14 @@
+<h1>미술품 목록</h1>
+
+<a href="{% url 'artwork_create' %}">작품 등록</a>
+
+<ul>
+  {% for artwork in artworks %}
+    <li>
+      {{ artwork.title }} - {{ artwork.artist }} ({{ artwork.price }}원)
+      <a href="{% url 'artwork_delete' artwork.id %}">삭제</a>
+    </li>
+  {% empty %}
+    <li>등록된 작품이 없습니다.</li>
+  {% endfor %}
+</ul>
