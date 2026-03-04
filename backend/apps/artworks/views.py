@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from apps.core.permissions import IsAdminUserOnly
 from .models import Artwork
 from .forms import ArtworkForm
 
@@ -14,8 +14,16 @@ def artwork_list(request):
     artworks = Artwork.objects.all()
     return render(request, "artworks/artwork_list.html", {"artworks": artworks})
 
+class ArtworkListCreateAPI(generics.ListCreateAPIView):
+    queryset = Artwork.objects.all()
+    serializer_class = ArtworkSerializer
+    permission_classes = [IsAdminUserOnly]
 
-# ✅ 여기다가 붙이면 된다
+class ArtworkDetailAPI(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Artwork.objects.all()
+    serializer_class = ArtworkSerializer
+    permission_classes = [IsAdminUserOnly]
+
 @login_required
 @user_passes_test(staff_check)
 def artwork_create(request):
